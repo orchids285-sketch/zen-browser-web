@@ -42,6 +42,13 @@ RUN mkdir -p /usr/share/fonts/truetype/inter && \
 # FoundReach branding: home page + profile customizations (seeded by startapp.sh).
 COPY foundreach/ /opt/foundreach/
 
+# Autoconfig: privileged startup JS that overrides the new-tab URL (Zen always
+# opens its own new tab on startup, ignoring the homepage pref) → every new tab
+# shows the FoundReach home page.
+RUN mkdir -p /opt/zen/defaults/pref && \
+    cp /opt/foundreach/foundreach.cfg /opt/zen/foundreach.cfg && \
+    cp /opt/foundreach/autoconfig.js  /opt/zen/defaults/pref/autoconfig.js
+
 # Repoint the GUI baseimage's app launcher at Zen (branded).
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh

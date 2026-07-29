@@ -32,13 +32,14 @@ user_pref("browser.newtabpage.activity-stream.default.sites", "");
 user_pref("browser.topsites.contile.enabled", false);
 user_pref("extensions.pocket.enabled", false);
 
-// ── Remove the vertical tab sidebar "languette" → normal horizontal tabs ─────
-user_pref("zen.tabs.vertical", false);
-user_pref("zen.tabs.vertical.right-side", false);
+// ── Hide the vertical tab sidebar "languette" → compact mode (reveal on hover)
+user_pref("zen.view.compact", true);
+user_pref("zen.view.compact.enabled", true);
+user_pref("zen.view.compact.hide-tabbar", true);
+user_pref("zen.view.compact.hide-toolbar", false);          // keep the top URL bar
 user_pref("zen.view.sidebar-expanded", false);
-user_pref("zen.view.sidebar-expanded.on-hover", false);
-user_pref("zen.view.compact.hide-tabbar", false);
-user_pref("zen.view.compact.hide-toolbar", false);
+user_pref("zen.view.sidebar-expanded.on-hover", true);      // slide out on hover
+user_pref("zen.view.show-newtab-button-top", false);
 user_pref("zen.workspaces.enabled", false);
 user_pref("zen.theme.accent-color", "#1b1b1a");
 
