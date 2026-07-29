@@ -1,0 +1,38 @@
+/* FoundReach Browser — chrome (UI) theming. */
+
+/* ── SaaS font across the entire browser UI ─────────────────────────────── */
+* {
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif !important;
+}
+
+/* ── Remove the thin top accent strip ("la petite languette") that Zen paints
+      above the toolbar, and any themed accent bars. Guarded/defensive: if a
+      selector doesn't exist it's simply a no-op. ───────────────────────────── */
+#zen-appcontent-navbar-container,
+.zenThemeMarkElement,
+.zen-app-accent,
+#zen-sidebar-top-buttons--reverse,
+#zen-tabbox-wrapper > .zen-current-workspace-indicator {
+  display: none !important;
+}
+#navigator-toolbox::before,
+#titlebar::before,
+#TabsToolbar::before {
+  display: none !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+:root {
+  --zen-themed-toolbar-bg: transparent !important;
+  --zen-colors-primary: #1b1b1a !important;
+  --zen-primary-color: #1b1b1a !important;
+}
+
+/* ── Keep the top toolbar clean & neutral (coherent, no yellow) ──────────── */
+#navigator-toolbox {
+  background: #f5f3ee !important;
+  border-bottom: 1px solid rgba(27,27,26,0.10) !important;
+}
+@media (prefers-color-scheme: dark) {
+  #navigator-toolbox { background: #0e0e0d !important; border-bottom-color: rgba(255,255,255,0.10) !important; }
+}

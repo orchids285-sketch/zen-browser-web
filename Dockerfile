@@ -33,9 +33,19 @@ RUN curl -fSL -o /tmp/zen.tar.xz \
     rm /tmp/zen.tar.xz && \
     test -x /opt/zen/zen
 
-# Repoint the GUI baseimage's app launcher at Zen.
+# SaaS font (Inter) for the browser UI + our home page.
+RUN mkdir -p /usr/share/fonts/truetype/inter && \
+    curl -fSL -o /usr/share/fonts/truetype/inter/Inter.ttf \
+      "https://github.com/google/fonts/raw/main/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf" && \
+    (fc-cache -f || true)
+
+# FoundReach branding: home page + profile customizations (seeded by startapp.sh).
+COPY foundreach/ /opt/foundreach/
+
+# Repoint the GUI baseimage's app launcher at Zen (branded).
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
 
-ENV APP_NAME="Zen Browser"
+# Window / noVNC title rebrand (no "Zen").
+ENV APP_NAME="FoundReach"
 EXPOSE 5800

@@ -1,6 +1,10 @@
 #!/bin/sh
-# Launch Zen inside the noVNC session. /config is the persistent HOME provided by
-# the baseimage; keep a dedicated profile so it survives restarts and never locks.
+# Launch Zen (branded as FoundReach) inside the noVNC session. Seed our branding
+# into the profile on every start (prefs + chrome CSS) without wiping user data.
 export HOME=/config
-mkdir -p /config/profile
-exec /opt/zen/zen --no-remote --profile /config/profile
+PROFILE=/config/profile
+mkdir -p "$PROFILE/chrome"
+cp -f /opt/foundreach/user.js         "$PROFILE/user.js"
+cp -f /opt/foundreach/userChrome.css  "$PROFILE/chrome/userChrome.css"
+cp -f /opt/foundreach/userContent.css "$PROFILE/chrome/userContent.css"
+exec /opt/zen/zen --no-remote --profile "$PROFILE"

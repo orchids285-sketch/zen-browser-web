@@ -1,0 +1,21 @@
+/* FoundReach Browser — in-page theming for the built-in new-tab / home. */
+@-moz-document url("about:newtab"), url("about:home") {
+  body, .outer-wrapper, .base-content-fallback {
+    background: #f5f3ee !important;
+    font-family: "Inter", system-ui, -apple-system, sans-serif !important;
+  }
+  /* Strip the Firefox/Zen clutter: logo, pocket, sponsored, stories, topsites */
+  .search-wrapper .logo-and-wordmark,
+  .brand-logo, .icon-pocket, .customize-menu,
+  .top-sites, .ds-layout, .sponsored, .sponsored-checkbox,
+  section[data-section-id="topstories"],
+  section[data-section-id="topsites"],
+  aside, .weather { display: none !important; }
+  .search-handoff-button, .fake-textbox {
+    font-family: "Inter", system-ui, sans-serif !important;
+    border-radius: 16px !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    body, .outer-wrapper { background: #0e0e0d !important; }
+  }
+}
