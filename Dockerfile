@@ -8,7 +8,11 @@ FROM jlesage/baseimage-gui:debian-12-v4
 #    fontconfig-config's postinst `chown root:staff` failed and cascaded.
 #  - BLOCK systemd + udev (`pkg-`): their container postinst fails (mkdir /var/log)
 #    and Zen doesn't need them, so apt won't drag them in transitively.
-RUN grep -q '^root:' /etc/passwd || echo 'root:x:0:0:root:/root:/bin/sh' >> /etc/passwd; \
+# /var/log is a dangling symlink in this base → fontconfig's postinst can't write
+# its log. Make it a real writable dir. Also repair root/staff (stripped from
+# passwd/group) so postinst chowns resolve.
+RUN { [ -d /var/log ] || { rm -f /var/log; mkdir -p /var/log; }; }; \
+    grep -q '^root:' /etc/passwd || echo 'root:x:0:0:root:/root:/bin/sh' >> /etc/passwd; \
     grep -q '^root:'  /etc/group  || echo 'root:x:0:'  >> /etc/group; \
     grep -q '^staff:' /etc/group  || echo 'staff:x:50:' >> /etc/group; \
     apt-get update && \
