@@ -33,6 +33,18 @@ RUN curl -fSL -o /tmp/zen.tar.xz \
     rm /tmp/zen.tar.xz && \
     test -x /opt/zen/zen
 
+# DIAGNOSTIC (temporary): dump Zen's real branding so we patch the right files.
+RUN apt-get update && apt-get install -y --no-install-recommends unzip && rm -rf /var/lib/apt/lists/*; \
+    echo "=====APPINI====="; cat /opt/zen/application.ini 2>/dev/null | head -40; \
+    echo "=====JA_FILES====="; ls -la /opt/zen/*.ja /opt/zen/browser/*.ja 2>/dev/null; \
+    mkdir -p /tmp/bo && cd /tmp/bo && unzip -q /opt/zen/browser/omni.ja 2>/dev/null; \
+    echo "=====BRANDFILES====="; find . -iname '*brand*' -type f 2>/dev/null; \
+    echo "=====BRANDFTL====="; find . -iname 'brand*.ftl' -exec sh -c 'echo "## {}"; cat "{}"' \; 2>/dev/null | head -40; \
+    echo "=====BRANDPROPS====="; find . -iname 'brand.properties' -exec sh -c 'echo "## {}"; cat "{}"' \; 2>/dev/null | head -30; \
+    echo "=====NEWTAB====="; find . -ipath '*newtab*' -type f 2>/dev/null | head -20; \
+    echo "=====ZENGREP====="; grep -rIl "Welcome to" . 2>/dev/null | head -10; \
+    echo "=====DONE====="
+
 # SaaS font (Inter) for the browser UI + our home page.
 RUN mkdir -p /usr/share/fonts/truetype/inter && \
     curl -fSL -o /usr/share/fonts/truetype/inter/Inter.ttf \
