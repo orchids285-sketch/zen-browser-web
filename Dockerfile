@@ -1,17 +1,19 @@
 # Zen Browser, served in the browser via noVNC over a single HTTP port (5800).
-# We base on jlesage/firefox — it already ships the full Gecko/GTK/X runtime and
-# the noVNC GUI stack (proven working on Railway) — and just drop Zen in over it,
-# repointing the app launcher. Minimal apt (only xz to extract) so nothing drags
-# in systemd. Railway-native: one HTTP port, no WebRTC/UDP.
-FROM jlesage/firefox:latest
+# Base = jlesage GUI baseimage on DEBIAN (glibc — Zen's tarball is a glibc binary,
+# so Alpine/musl bases won't run it) + Xvfb + x11vnc + noVNC. Railway-native.
+FROM jlesage/baseimage-gui:debian-12-v4
 
-# NOTE: no `USER` directive — Railway's BuildKit can't resolve users against
-# jlesage's minimal /etc/passwd. The base already builds as root, which is what
-# apt needs, so we leave the user as-is.
-
-# Only what's needed to fetch + extract the Zen tarball (Gecko libs already present).
+# Gecko/GTK runtime libs Zen needs. We BLOCK systemd + udev (the `pkg-` syntax):
+# their container post-install fails (mkdir /var/log) and Zen doesn't need them,
+# so we stop apt from dragging them in transitively.
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends xz-utils curl ca-certificates && \
+    apt-get install -y --no-install-recommends \
+        xz-utils curl ca-certificates \
+        libgtk-3-0 libdbus-glib-1-2 libx11-xcb1 libxcb-shm0 \
+        libxt6 libxtst6 libasound2 libgdk-pixbuf-2.0-0 \
+        libgl1 libegl1 \
+        fonts-liberation fonts-noto-color-emoji \
+        systemd- udev- && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Zen from the official Linux x86_64 tarball (auto-latest on rebuild).
