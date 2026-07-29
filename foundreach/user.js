@@ -32,14 +32,12 @@ user_pref("browser.newtabpage.activity-stream.default.sites", "");
 user_pref("browser.topsites.contile.enabled", false);
 user_pref("extensions.pocket.enabled", false);
 
-// ── Hide the vertical tab sidebar "languette" → compact mode (reveal on hover)
-user_pref("zen.view.compact", true);
-user_pref("zen.view.compact.enabled", true);
-user_pref("zen.view.compact.hide-tabbar", true);
-user_pref("zen.view.compact.hide-toolbar", false);          // keep the top URL bar
+// ── Clean, minimal layout: keep the normal top toolbar (URL bar), collapse the
+//    vertical tab sidebar (the "languette") to a thin strip (hidden by userChrome).
+user_pref("zen.view.compact", false);
+user_pref("zen.view.compact.enabled", false);
 user_pref("zen.view.sidebar-expanded", false);
-user_pref("zen.view.sidebar-expanded.on-hover", true);      // slide out on hover
-user_pref("zen.view.show-newtab-button-top", false);
+user_pref("zen.view.sidebar-expanded.on-hover", true);
 user_pref("zen.workspaces.enabled", false);
 user_pref("zen.theme.accent-color", "#1b1b1a");
 

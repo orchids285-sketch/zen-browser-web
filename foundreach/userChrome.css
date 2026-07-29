@@ -28,6 +28,16 @@
   --zen-primary-color: #1b1b1a !important;
 }
 
+/* ── Hide the collapsed vertical tab strip ("la petite languette") on the left,
+      while keeping the top toolbar (URL bar). Reveals on hover via the pref. ── */
+#navigator-toolbox[zen-sidebar-expanded="false"] #tabbrowser-tabs,
+#zen-tabbox-wrapper:not(:hover) #vertical-tabs,
+#zen-sidebar-bottom-buttons,
+#zen-sidebar-top-buttons { opacity: 0 !important; }
+#zen-main-app-wrapper:not(:hover) #navigator-toolbox toolbar#TabsToolbar {
+  min-width: 0 !important;
+}
+
 /* ── Keep the top toolbar clean & neutral (coherent, no yellow) ──────────── */
 #navigator-toolbox {
   background: #f5f3ee !important;
