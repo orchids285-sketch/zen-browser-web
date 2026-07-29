@@ -8,7 +8,9 @@ FROM jlesage/baseimage-gui:debian-12-v4
 #    fontconfig-config's postinst `chown root:staff` failed and cascaded.
 #  - BLOCK systemd + udev (`pkg-`): their container postinst fails (mkdir /var/log)
 #    and Zen doesn't need them, so apt won't drag them in transitively.
-RUN grep -q '^staff:' /etc/group || echo 'staff:x:50:' >> /etc/group; \
+RUN grep -q '^root:' /etc/passwd || echo 'root:x:0:0:root:/root:/bin/sh' >> /etc/passwd; \
+    grep -q '^root:'  /etc/group  || echo 'root:x:0:'  >> /etc/group; \
+    grep -q '^staff:' /etc/group  || echo 'staff:x:50:' >> /etc/group; \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         xz-utils curl ca-certificates \
@@ -16,7 +18,8 @@ RUN grep -q '^staff:' /etc/group || echo 'staff:x:50:' >> /etc/group; \
         libxt6 libxtst6 libasound2 libgdk-pixbuf-2.0-0 \
         libgl1 libegl1 \
         fonts-liberation fonts-noto-color-emoji \
-        systemd- udev- && \
+        systemd- udev- ; \
+    dpkg --configure -a && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Zen from the official Linux x86_64 tarball (auto-latest on rebuild).
