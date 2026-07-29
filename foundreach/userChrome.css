@@ -5,44 +5,18 @@
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif !important;
 }
 
-/* ── Remove the thin top accent strip ("la petite languette") that Zen paints
-      above the toolbar, and any themed accent bars. Guarded/defensive: if a
-      selector doesn't exist it's simply a no-op. ───────────────────────────── */
-#zen-appcontent-navbar-container,
-.zenThemeMarkElement,
-.zen-app-accent,
-#zen-sidebar-top-buttons--reverse,
-#zen-tabbox-wrapper > .zen-current-workspace-indicator {
-  display: none !important;
-}
+/* ── Remove ONLY the thin top accent strip ("la petite languette") Zen paints
+      above the toolbar. Guarded/defensive: no-op if the selector is absent.
+      (We do NOT hide toolbar buttons/tabs — that broke the URL bar.) ──────── */
 #navigator-toolbox::before,
 #titlebar::before,
-#TabsToolbar::before {
+#TabsToolbar::before,
+.zenThemeMarkElement {
   display: none !important;
   background: transparent !important;
   border: 0 !important;
 }
 :root {
   --zen-themed-toolbar-bg: transparent !important;
-  --zen-colors-primary: #1b1b1a !important;
   --zen-primary-color: #1b1b1a !important;
-}
-
-/* ── Hide the collapsed vertical tab strip ("la petite languette") on the left,
-      while keeping the top toolbar (URL bar). Reveals on hover via the pref. ── */
-#navigator-toolbox[zen-sidebar-expanded="false"] #tabbrowser-tabs,
-#zen-tabbox-wrapper:not(:hover) #vertical-tabs,
-#zen-sidebar-bottom-buttons,
-#zen-sidebar-top-buttons { opacity: 0 !important; }
-#zen-main-app-wrapper:not(:hover) #navigator-toolbox toolbar#TabsToolbar {
-  min-width: 0 !important;
-}
-
-/* ── Keep the top toolbar clean & neutral (coherent, no yellow) ──────────── */
-#navigator-toolbox {
-  background: #f5f3ee !important;
-  border-bottom: 1px solid rgba(27,27,26,0.10) !important;
-}
-@media (prefers-color-scheme: dark) {
-  #navigator-toolbox { background: #0e0e0d !important; border-bottom-color: rgba(255,255,255,0.10) !important; }
 }

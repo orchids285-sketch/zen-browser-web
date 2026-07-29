@@ -1,8 +1,8 @@
 // FoundReach Browser — enforced defaults (re-applied on every launch).
 
 // ── Start page = our page, no Zen landing / welcome / onboarding ─────────────
-// Hosted over HTTPS on the SaaS domain (Firefox refuses file:// as a homepage).
-user_pref("browser.startup.homepage", "https://foundreach-app.vercel.app/browser-home.html");
+// Local page (bundled in the image) — no runtime internet dependency.
+user_pref("browser.startup.homepage", "file:///opt/foundreach/home.html");
 user_pref("browser.startup.page", 1);                       // open homepage on start
 user_pref("browser.sessionstore.resume_from_crash", false); // never restore old session
 user_pref("browser.sessionstore.max_resumed_crashes", 0);
