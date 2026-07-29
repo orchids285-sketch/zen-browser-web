@@ -1,4 +1,5 @@
 # Zen Browser, served via noVNC over a single HTTP port (5800). Debian/glibc base.
+# 100% stock Zen — no customization.
 FROM jlesage/baseimage-gui:debian-12-v4
 
 # Base-image fixes so Debian browser packages install cleanly on this minimal image:
@@ -25,8 +26,6 @@ RUN curl -fSL -o /tmp/zen.tar.xz \
       "https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz" && \
     tar -xJf /tmp/zen.tar.xz -C /opt && rm /tmp/zen.tar.xz && test -x /opt/zen/zen
 
-# ONLY customization: suppress Zen's first-run welcome page (seeded by startapp.sh).
-COPY foundreach/user.js /opt/foundreach/user.js
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
 
