@@ -5,8 +5,9 @@
 # in systemd. Railway-native: one HTTP port, no WebRTC/UDP.
 FROM jlesage/firefox:latest
 
-# jlesage's image doesn't resolve the NAME "root" in /etc/passwd → use numeric UID 0.
-USER 0
+# NOTE: no `USER` directive — Railway's BuildKit can't resolve users against
+# jlesage's minimal /etc/passwd. The base already builds as root, which is what
+# apt needs, so we leave the user as-is.
 
 # Only what's needed to fetch + extract the Zen tarball (Gecko libs already present).
 RUN apt-get update && \
