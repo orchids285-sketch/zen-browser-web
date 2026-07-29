@@ -3,10 +3,13 @@
 # so Alpine/musl bases won't run it) + Xvfb + x11vnc + noVNC. Railway-native.
 FROM jlesage/baseimage-gui:debian-12-v4
 
-# Gecko/GTK runtime libs Zen needs. We BLOCK systemd + udev (the `pkg-` syntax):
-# their container post-install fails (mkdir /var/log) and Zen doesn't need them,
-# so we stop apt from dragging them in transitively.
-RUN apt-get update && \
+# Gecko/GTK runtime libs Zen needs. Two fixes for this minimal base image:
+#  - recreate the standard `staff` group (gid 50) — jlesage stripped it, so
+#    fontconfig-config's postinst `chown root:staff` failed and cascaded.
+#  - BLOCK systemd + udev (`pkg-`): their container postinst fails (mkdir /var/log)
+#    and Zen doesn't need them, so apt won't drag them in transitively.
+RUN grep -q '^staff:' /etc/group || echo 'staff:x:50:' >> /etc/group; \
+    apt-get update && \
     apt-get install -y --no-install-recommends \
         xz-utils curl ca-certificates \
         libgtk-3-0 libdbus-glib-1-2 libx11-xcb1 libxcb-shm0 \
