@@ -1,0 +1,36 @@
+/* FoundReach Browser — brand Zen's built-in new-tab / home into the FoundReach
+   page (Zen's newtab is hardcoded, so we can't swap the URL — we restyle it). */
+@-moz-document url("about:newtab"), url("about:home"), url("about:blank"),
+               url-prefix("about:newtab"), url-prefix("about:home") {
+
+  html, body, .outer-wrapper, .base-content-fallback, #root, body > * {
+    background: #f5f3ee !important;
+  }
+  * { font-family: "Inter", system-ui, -apple-system, sans-serif !important; }
+
+  /* FoundReach wordmark + tagline, injected well above Zen's centered search. */
+  body::before {
+    content: "FoundReach";
+    position: fixed; top: 16%; left: 0; right: 0; text-align: center;
+    font-weight: 300; font-size: 42px; letter-spacing: -0.01em; color: #1b1b1a;
+    pointer-events: none; z-index: 2147483000;
+  }
+  body::after {
+    content: "Your autonomous acquisition workspace";
+    position: fixed; top: calc(16% + 56px); left: 0; right: 0; text-align: center;
+    font-size: 15px; color: #7c776e; pointer-events: none; z-index: 2147483000;
+  }
+
+  /* Strip Firefox/Zen clutter: logos, pocket, sponsored, stories, top sites. */
+  .logo-and-wordmark, .brand-logo, .icon-pocket, .customize-menu,
+  .top-sites, .ds-layout, .sponsored, .sponsored-checkbox, aside, .weather,
+  section[data-section-id="topstories"], section[data-section-id="topsites"] {
+    display: none !important;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html, body, .outer-wrapper { background: #0e0e0d !important; }
+    body::before { color: #f2f0ea !important; }
+    body::after  { color: #9a958b !important; }
+  }
+}

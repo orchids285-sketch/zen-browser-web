@@ -1,0 +1,10 @@
+{
+  "manifest_version": 2,
+  "name": "FoundReach New Tab",
+  "version": "1.0.0",
+  "description": "FoundReach home page as the new tab.",
+  "browser_specific_settings": {
+    "gecko": { "id": "newtab@foundreach.app", "strict_min_version": "115.0" }
+  },
+  "chrome_url_overrides": { "newtab": "newtab.html" }
+}
