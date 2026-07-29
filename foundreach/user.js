@@ -45,6 +45,14 @@ user_pref("zen.theme.accent-color", "#1b1b1a");
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.uidensity", 0);
 
+// ── Allow our side-loaded new-tab-override extension (unsigned, unpacked) ─────
+user_pref("xpinstall.signatures.required", false);
+user_pref("extensions.autoDisableScopes", 0);
+user_pref("extensions.enabledScopes", 15);
+user_pref("extensions.startupScanScopes", 15);
+user_pref("extensions.installDistroAddons", true);
+user_pref("extensions.newTabOverride.url", "moz-extension://newtab/newtab.html");
+
 // ── Quiet, private, clean ────────────────────────────────────────────────────
 user_pref("datareporting.policy.dataSubmissionEnabled", false);
 user_pref("datareporting.healthreport.uploadEnabled", false);
