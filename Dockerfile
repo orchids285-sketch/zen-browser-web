@@ -1,18 +1,13 @@
-# Zen Browser, served in the browser via noVNC over a single HTTP port (5800).
-# Base = jlesage GUI baseimage on DEBIAN (glibc — Zen's tarball is a glibc binary,
-# so Alpine/musl bases won't run it) + Xvfb + x11vnc + noVNC. Railway-native.
+# Zen Browser, served via noVNC over a single HTTP port (5800). Debian/glibc base.
+# 100% stock Zen — no customization.
 FROM jlesage/baseimage-gui:debian-12-v4
 
-# Gecko/GTK runtime libs Zen needs. Two fixes for this minimal base image:
-#  - recreate the standard `staff` group (gid 50) — jlesage stripped it, so
-#    fontconfig-config's postinst `chown root:staff` failed and cascaded.
-#  - BLOCK systemd + udev (`pkg-`): their container postinst fails (mkdir /var/log)
-#    and Zen doesn't need them, so apt won't drag them in transitively.
-# /var/log is a dangling symlink in this base → fontconfig's postinst can't write
-# its log. Make it a real writable dir. Also repair root/staff (stripped from
-# passwd/group) so postinst chowns resolve.
+# Base-image fixes so Debian browser packages install cleanly on this minimal image:
+#  - /var/log must be a real dir (dangling symlink breaks fontconfig postinst)
+#  - recreate root (/etc/passwd) + root/staff groups (stripped → chown fails)
+#  - block systemd/udev (their in-container postinst fails; Zen doesn't need them)
 RUN { [ -d /var/log ] || { rm -f /var/log; mkdir -p /var/log; }; }; \
-    grep -q '^root:' /etc/passwd || echo 'root:x:0:0:root:/root:/bin/sh' >> /etc/passwd; \
+    grep -q '^root:'  /etc/passwd || echo 'root:x:0:0:root:/root:/bin/sh' >> /etc/passwd; \
     grep -q '^root:'  /etc/group  || echo 'root:x:0:'  >> /etc/group; \
     grep -q '^staff:' /etc/group  || echo 'staff:x:50:' >> /etc/group; \
     apt-get update && \
@@ -26,33 +21,13 @@ RUN { [ -d /var/log ] || { rm -f /var/log; mkdir -p /var/log; }; }; \
     dpkg --configure -a && \
     rm -rf /var/lib/apt/lists/*
 
-# Install Zen from the official Linux x86_64 tarball (auto-latest on rebuild).
+# Install Zen from the official Linux x86_64 tarball.
 RUN curl -fSL -o /tmp/zen.tar.xz \
       "https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz" && \
-    tar -xJf /tmp/zen.tar.xz -C /opt && \
-    rm /tmp/zen.tar.xz && \
-    test -x /opt/zen/zen
+    tar -xJf /tmp/zen.tar.xz -C /opt && rm /tmp/zen.tar.xz && test -x /opt/zen/zen
 
-# SaaS font (Inter) for the browser UI + our home page.
-RUN mkdir -p /usr/share/fonts/truetype/inter && \
-    curl -fSL -o /usr/share/fonts/truetype/inter/Inter.ttf \
-      "https://github.com/google/fonts/raw/main/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf" && \
-    (fc-cache -f || true)
-
-# FoundReach branding: home page + profile customizations (seeded by startapp.sh).
-COPY foundreach/ /opt/foundreach/
-
-# Autoconfig: privileged startup JS that overrides the new-tab URL (Zen always
-# opens its own new tab on startup, ignoring the homepage pref) → every new tab
-# shows the FoundReach home page.
-RUN mkdir -p /opt/zen/defaults/pref && \
-    cp /opt/foundreach/foundreach.cfg /opt/zen/foundreach.cfg && \
-    cp /opt/foundreach/autoconfig.js  /opt/zen/defaults/pref/autoconfig.js
-
-# Repoint the GUI baseimage's app launcher at Zen (branded).
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
 
-# Window / noVNC title rebrand (no "Zen").
-ENV APP_NAME="FoundReach"
+ENV APP_NAME="Zen Browser"
 EXPOSE 5800
