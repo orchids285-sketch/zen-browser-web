@@ -1,6 +1,9 @@
 #!/bin/sh
 # Launch Vivaldi (Chromium engine) inside the noVNC session.
 export HOME=/config
+# DIAG TEST: force a FRESH profile each boot to check if Chromium's tracked-pref
+# MAC on a mature profile was rejecting our externally-set css dir.
+rm -rf /config/profile
 mkdir -p /config/profile
 # Clear stale Chromium singleton locks from an unclean shutdown. Without this,
 # on a persistent volume Vivaldi aborts with "profile appears to be in use by
