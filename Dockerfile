@@ -44,23 +44,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends unzip zip && rm
     rm -f /opt/zen/browser/omni.ja && zip -qr9XD /opt/zen/browser/omni.ja * && cd / && rm -rf /tmp/oj; \
     echo "DEBRAND_DONE omni_bytes=$(stat -c%s /opt/zen/browser/omni.ja)"
 
-# SaaS font (Inter) for the browser UI + our home page.
-RUN mkdir -p /usr/share/fonts/truetype/inter && \
-    curl -fSL -o /usr/share/fonts/truetype/inter/Inter.ttf \
-      "https://github.com/google/fonts/raw/main/ofl/inter/Inter%5Bopsz%2Cwght%5D.ttf" && \
-    (fc-cache -f || true)
-
-# FoundReach branding: home page + profile customizations (seeded by startapp.sh).
+# Only the welcome-off pref (seeded by startapp.sh) — NO fonts, NO CSS overlays,
+# NO newtab override. Native Zen interface stays intact.
 COPY foundreach/ /opt/foundreach/
 
-# Autoconfig: privileged startup JS that overrides the new-tab URL (Zen always
-# opens its own new tab on startup, ignoring the homepage pref) → every new tab
-# shows the FoundReach home page.
-RUN mkdir -p /opt/zen/defaults/pref && \
-    cp /opt/foundreach/foundreach.cfg /opt/zen/foundreach.cfg && \
-    cp /opt/foundreach/autoconfig.js  /opt/zen/defaults/pref/autoconfig.js
-
-# Repoint the GUI baseimage's app launcher at Zen (branded).
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
 
