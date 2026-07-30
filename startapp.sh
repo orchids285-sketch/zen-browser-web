@@ -1,8 +1,15 @@
 #!/bin/sh
-# Launch native Zen (de-branded to FoundReach in its files). Only seed the
-# welcome-off prefs — no chrome CSS, no newtab override, no theming.
+# Launch Chromium inside the noVNC session. Container-friendly flags:
+# no-sandbox (container has no setuid sandbox), disable-dev-shm (small /dev/shm),
+# basic password store (no keyring prompt), persistent profile under /config.
 export HOME=/config
-PROFILE=/config/profile
-mkdir -p "$PROFILE"
-cp -f /opt/foundreach/user.js "$PROFILE/user.js"
-exec /opt/zen/zen --no-remote --profile "$PROFILE"
+mkdir -p /config/profile
+exec /usr/bin/chromium \
+  --no-sandbox \
+  --disable-dev-shm-usage \
+  --disable-gpu \
+  --no-first-run \
+  --no-default-browser-check \
+  --password-store=basic \
+  --start-maximized \
+  --user-data-dir=/config/profile
