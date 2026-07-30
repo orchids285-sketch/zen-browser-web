@@ -30,6 +30,15 @@ RUN curl -fSL https://repo.vivaldi.com/archive/linux_signing_key.pub | gpg --dea
     rm -rf /var/lib/apt/lists/* && \
     test -x /opt/vivaldi/vivaldi
 
+# Hide the noVNC viewer control bar (the "languette" that expands into Clipboard/
+# Settings/Scaling/Quality/…). The embedded browser is driven directly via the
+# canvas; the viewer chrome isn't wanted. Append the rule to noVNC's base.css.
+RUN css="/opt/noVNC/app/styles/base.css"; \
+    if [ -f "$css" ]; then \
+      printf '\n/* FoundReach: hide noVNC control bar */\n#noVNC_control_bar_anchor,#noVNC_control_bar,#noVNC_control_bar_handle,#noVNC_status_bar,#noVNC_status{display:none!important;visibility:hidden!important;}\n' >> "$css"; \
+      echo "NOVNC_BAR_HIDDEN"; \
+    else echo "WARN: base.css not found at $css"; ls -la /opt/noVNC/app/styles/ 2>/dev/null || true; fi
+
 # Dia-like UI CSS mods (VivalArc Arc layout + FoundReach warm palette). startapp
 # copies these into the profile's mods folder on boot; Vivaldi loads them once
 # "Allow CSS modifications" is on and the folder is set to /config/mods.
