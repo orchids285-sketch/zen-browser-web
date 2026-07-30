@@ -45,12 +45,15 @@ COPY mods/ /opt/mods/
 # ROBUST skin load: inject the Dia CSS straight into Vivaldi's UI (browser.html)
 # so it applies on EVERY boot — no fragile css_ui_mods pref/picker (which kept
 # resetting across deploys). This is the classic file-level Vivaldi UI mod.
-RUN UIHTML="$(find /opt/vivaldi -name browser.html 2>/dev/null | head -1)"; \
+RUN UIHTML="$(find /opt/vivaldi/resources -name window.html -o -name browser.html 2>/dev/null | head -1)"; \
     if [ -n "$UIHTML" ]; then \
       UIDIR="$(dirname "$UIHTML")"; mkdir -p "$UIDIR/fr-mods" && cp /opt/mods/*.css "$UIDIR/fr-mods/"; \
-      sed -i 's#</head>#<link rel="stylesheet" href="fr-mods/0-gtwalsheim.css"/><link rel="stylesheet" href="fr-mods/vivalarc.css"/><link rel="stylesheet" href="fr-mods/zz-dia.css"/></head>#I' "$UIHTML"; \
+      LINKS='<link rel="stylesheet" href="fr-mods/0-gtwalsheim.css"/><link rel="stylesheet" href="fr-mods/vivalarc.css"/><link rel="stylesheet" href="fr-mods/zz-dia.css"/>'; \
+      if grep -qi '</head>' "$UIHTML"; then sed -i "s#</head>#${LINKS}</head>#I" "$UIHTML"; \
+      elif grep -qi '</body>' "$UIHTML"; then sed -i "s#</body>#${LINKS}</body>#I" "$UIHTML"; \
+      else printf '%s' "$LINKS" >> "$UIHTML"; fi; \
       echo "FR_UI_INJECTED into $UIHTML (refs=$(grep -c fr-mods "$UIHTML"))"; \
-    else echo "FR_UI: browser.html NOT FOUND"; find /opt/vivaldi -name '*.html' 2>/dev/null | head; fi
+    else echo "FR_UI: UI html NOT FOUND"; find /opt/vivaldi -name '*.html' 2>/dev/null | head; fi
 
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
