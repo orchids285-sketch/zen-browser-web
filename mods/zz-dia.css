@@ -1,5 +1,5 @@
-/* FoundReach — Dia skin for Vivaldi: pink top pill-tabs (cowork style) that
-   connect into a white rounded-top content panel. Injected into window.html. */
+/* FoundReach — Dia skin for Vivaldi: rose chrome + TOP cowork-style pill tabs +
+   white rounded content card. Injected into window.html so it always loads. */
 
 :root {
   --colorBg:          #f1d9de !important;  /* soft Dia rose */
@@ -12,36 +12,24 @@
   --colorHighlightFg: #ffffff !important;
 }
 
-/* Rose: the top tab-bar zone. */
+/* Rose chrome everywhere in the frame (top bar, tab bar, toolbar, main). */
 #browser,
 #header,
-#tabs-tabbar-container,
-#tabs-container,
-.tabbar-wrapper,
-#panels-container {
-  background-color: #f1d9de !important;
-}
-
-/* Everything below the tabs = one WHITE rounded-top panel (toolbar + content),
-   so the active tab flows into it — the Dia "tab opens into the page" look. */
 .mainbar,
 .toolbar-mainbar,
 #main,
 #main > .inner,
-#webview-container,
-#webpage-stack,
-.webpageview,
-.webpageview .webpage {
-  background-color: #ffffff !important;
-}
-#main {
-  border-radius: 16px 16px 0 0 !important;
-  overflow: hidden !important;
-  box-shadow: 0 -1px 12px rgba(150, 90, 110, .07) !important;
+#tabs-tabbar-container,
+#tabs-container,
+.tabbar-wrapper,
+#panels-container,
+.toolbar,
+footer,
+.toolbar-statusbar {
+  background-color: #f1d9de !important;
 }
 
-/* Dia / cowork tabs — rounded pills. Inactive = translucent rose pill;
-   active = solid white, rounded TOP only so it connects to the white panel. */
+/* Dia / cowork pill tabs. Inactive = translucent rose pill; active = solid white. */
 .tab { margin: 5px 3px 0 3px !important; }
 .tab .tab-header {
   border-radius: 12px !important;
@@ -52,15 +40,30 @@
 .tab.active .tab-header,
 .tab .tab-header.active {
   background: #ffffff !important;
-  border-radius: 12px 12px 0 0 !important;
+  box-shadow: 0 2px 9px rgba(150, 90, 110, .18) !important;
 }
 
-/* Soft pill address field, sitting in the white toolbar. */
+/* White page floating in a rounded card (the active tab points down into it). */
+#webview-container {
+  padding: 6px 12px 12px 12px !important;
+  background: transparent !important;
+}
+#webpage-stack,
+#webview-container .webpageview,
+.webpageview .webpage {
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 22px rgba(150, 90, 110, .16),
+              0 0 0 1px rgba(150, 90, 110, .05) !important;
+}
+
+/* Soft pill address field. */
 .UrlBar-AddressField,
 .UrlBar-SearchField,
 .SearchField {
   border-radius: 999px !important;
-  background: #f6eef0 !important;
+  background: rgba(255, 255, 255, .6) !important;
 }
 
 /* SaaS font: GT Walsheim (icons are SVG, unaffected). */
