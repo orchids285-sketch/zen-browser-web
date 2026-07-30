@@ -3,13 +3,13 @@
    the Dia/Arc signature. Direct selectors so it applies unconditionally. */
 
 :root {
-  --colorBg:          #f4ebe4 !important;  /* warm cream chrome */
-  --colorBgDark:      #ece0d8 !important;
-  --colorBgLighter:   #fbf5f1 !important;
-  --colorFg:          #4a4038 !important;  /* warm brown-grey text */
-  --colorAccentBg:    #efe1d8 !important;  /* soft warm accent surface */
-  --colorAccentFg:    #4a4038 !important;
-  --colorHighlightBg: #cf8a6c !important;  /* Dia terracotta highlight */
+  --colorBg:          #f7eaec !important;  /* soft Dia rosy-pink chrome */
+  --colorBgDark:      #efdce0 !important;
+  --colorBgLighter:   #fdf6f7 !important;
+  --colorFg:          #4b3f42 !important;  /* warm mauve-grey text */
+  --colorAccentBg:    #f3e2e6 !important;  /* soft rose accent surface */
+  --colorAccentFg:    #4b3f42 !important;
+  --colorHighlightBg: #d98fa0 !important;  /* Dia dusty-rose highlight */
   --colorHighlightFg: #ffffff !important;
 }
 
@@ -25,7 +25,7 @@
 #tabs-container,
 footer,
 .toolbar-statusbar {
-  background-color: #f4ebe4 !important;
+  background-color: #f7eaec !important;
 }
 
 /* Tabs → soft rounded pills with breathing room. */
