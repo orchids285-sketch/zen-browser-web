@@ -1,51 +1,47 @@
-/* FoundReach — Dia-like skin for Vivaldi (loads after vivalarc.css, so wins).
-   Warm cream chrome + rounded pill tabs + a floating rounded content card —
-   the Dia/Arc signature. Direct selectors so it applies unconditionally. */
+/* FoundReach — Dia skin for Vivaldi. TOP tabs, soft rose, rounded pill tabs,
+   floating white content card. Injected into window.html so it always loads. */
 
 :root {
-  --colorBg:          #f7eaec !important;  /* soft Dia rosy-pink chrome */
-  --colorBgDark:      #efdce0 !important;
-  --colorBgLighter:   #fdf6f7 !important;
-  --colorFg:          #4b3f42 !important;  /* warm mauve-grey text */
-  --colorAccentBg:    #f3e2e6 !important;  /* soft rose accent surface */
-  --colorAccentFg:    #4b3f42 !important;
-  --colorHighlightBg: #d98fa0 !important;  /* Dia dusty-rose highlight */
+  --colorBg:          #f1d9de !important;  /* soft Dia rose chrome */
+  --colorBgDark:      #eaccd3 !important;
+  --colorBgLighter:   #fbeef1 !important;
+  --colorFg:          #4b3b40 !important;  /* warm mauve text */
+  --colorAccentBg:    #eed3da !important;
+  --colorAccentFg:    #4b3b40 !important;
+  --colorHighlightBg: #d98fa0 !important;  /* dusty-rose accent */
   --colorHighlightFg: #ffffff !important;
 }
 
-/* Warm the chrome surfaces (sidebar, toolbar, panels, footer). */
+/* Rose chrome across the whole top area + toolbar. */
 #browser,
 #header,
 .mainbar,
+.toolbar-mainbar,
 #main,
 #main > .inner,
-#panels-container,
-.panel-group,
-.tabbar-wrapper,
+#tabs-tabbar-container,
 #tabs-container,
+.tabbar-wrapper,
+#panels-container,
+.toolbar,
 footer,
 .toolbar-statusbar {
-  background-color: #f7eaec !important;
+  background-color: #f1d9de !important;
 }
 
-/* Tabs → soft rounded pills with breathing room. */
-.tab-position .tab,
-.tab .tab-header {
-  border-radius: 11px !important;
-}
-.tab-position .tab { margin: 2px 6px !important; }
-.tab .tab-header.active,
-.tab.active .tab-header {
+/* Rounded pill tabs (Dia). Active = white pill; inactive = translucent. */
+.tab { border-radius: 12px !important; margin: 3px 3px !important; }
+.tab .tab-header { border-radius: 12px !important; }
+.tab.active .tab-header,
+.tab .tab-header.active {
   background: #ffffff !important;
-  box-shadow: 0 1px 5px rgba(90, 60, 40, .14) !important;
+  box-shadow: 0 1px 6px rgba(150, 90, 110, .18) !important;
 }
-.tab .tab-header:hover {
-  background: rgba(255, 255, 255, .55) !important;
-}
+.tab .tab-header:hover { background: rgba(255, 255, 255, .5) !important; }
 
-/* The web page floats in a rounded card with clear margin + shadow (Dia signature). */
+/* White page floating in a rounded card with margin + shadow (Dia). */
 #webview-container {
-  padding: 10px 14px 14px 6px !important;
+  padding: 8px 12px 12px 12px !important;
   background: transparent !important;
 }
 #webpage-stack,
@@ -53,24 +49,19 @@ footer,
 .webpageview .webpage {
   border-radius: 16px !important;
   overflow: hidden !important;
-  box-shadow: 0 4px 22px rgba(70, 45, 25, .17),
-              0 0 0 1px rgba(120, 90, 70, .07) !important;
+  box-shadow: 0 4px 24px rgba(150, 90, 110, .16),
+              0 0 0 1px rgba(150, 90, 110, .05) !important;
 }
 
-/* Pill-shaped address + search fields. */
+/* Pill address + search fields. */
 .UrlBar-AddressField,
 .UrlBar-SearchField,
 .SearchField {
   border-radius: 999px !important;
+  background: rgba(255, 255, 255, .6) !important;
 }
 
-/* Rounder toolbar buttons on hover for a softer feel. */
-.toolbar .button-toolbar > button:hover,
-.button-toolbar.browserAction-icon:hover {
-  border-radius: 10px !important;
-}
-
-/* ---- SaaS font: GT Walsheim across the Vivaldi UI (icons are SVG, unaffected). ---- */
+/* SaaS font: GT Walsheim (icons are SVG, unaffected). */
 #browser,
 #browser div,
 #browser span,
@@ -87,7 +78,7 @@ footer,
   font-family: 'GT Walsheim', 'Inter', system-ui, sans-serif !important;
 }
 
-/* ---- Remove the bottom status bar (the "languette") for a cleaner Dia look. ---- */
+/* Remove the bottom status bar for a cleaner, Dia-like frame. */
 #browser #footer,
 #browser > footer,
 #browser .toolbar-statusbar {
