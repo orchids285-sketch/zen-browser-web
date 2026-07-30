@@ -1,20 +1,19 @@
-/* FoundReach — Dia-like WARM palette, layered on top of VivalArc (Arc layout).
-   VivalArc gives the shape (rounded pills, floating white content card, clean
-   sidebar); this file only warms the colors toward Dia's soft cream/pink and
-   keeps the page card crisp white so it "pops". Loads after vivalarc.css (zz-). */
+/* FoundReach — Dia-like skin for Vivaldi (loads after vivalarc.css, so wins).
+   Warm cream chrome + rounded pill tabs + a floating rounded content card —
+   the Dia/Arc signature. Direct selectors so it applies unconditionally. */
 
 :root {
-  --colorBg:        #f5ece6 !important;  /* warm cream chrome */
-  --colorBgDark:    #ece0d8 !important;
-  --colorBgLighter: #fbf5f1 !important;
-  --colorFg:        #4b4139 !important;  /* warm brown-grey text */
-  --colorAccentBg:  #f0e2da !important;  /* soft warm accent surface */
-  --colorAccentFg:  #4b4139 !important;
-  --colorHighlightBg: #d08a6d !important;/* Dia-ish terracotta highlight */
+  --colorBg:          #f4ebe4 !important;  /* warm cream chrome */
+  --colorBgDark:      #ece0d8 !important;
+  --colorBgLighter:   #fbf5f1 !important;
+  --colorFg:          #4a4038 !important;  /* warm brown-grey text */
+  --colorAccentBg:    #efe1d8 !important;  /* soft warm accent surface */
+  --colorAccentFg:    #4a4038 !important;
+  --colorHighlightBg: #cf8a6c !important;  /* Dia terracotta highlight */
   --colorHighlightFg: #ffffff !important;
 }
 
-/* Warm the chrome surfaces directly, in case the theme vars don't fully cascade. */
+/* Warm the chrome surfaces (sidebar, toolbar, panels, footer). */
 #browser,
 #header,
 .mainbar,
@@ -23,21 +22,50 @@
 #panels-container,
 .panel-group,
 .tabbar-wrapper,
+#tabs-container,
 footer,
 .toolbar-statusbar {
-  background-color: #f5ece6 !important;
+  background-color: #f4ebe4 !important;
 }
 
-/* Keep the floating page card crisp white so it reads as a card, like Dia. */
-#webpage-stack { background: #ffffff !important; }
-
-/* Pill-shaped address field. */
-.UrlBar-AddressField,
-.SearchField { border-radius: 999px !important; }
-
-/* Active tab = soft white pill with a gentle shadow (Dia selected-tab feel). */
-.tab-position .tab.active .tab-header,
+/* Tabs → soft rounded pills with breathing room. */
+.tab-position .tab,
+.tab .tab-header {
+  border-radius: 11px !important;
+}
+.tab-position .tab { margin: 2px 6px !important; }
+.tab .tab-header.active,
 .tab.active .tab-header {
   background: #ffffff !important;
-  box-shadow: 0 1px 4px rgba(90, 60, 40, .12) !important;
+  box-shadow: 0 1px 5px rgba(90, 60, 40, .14) !important;
+}
+.tab .tab-header:hover {
+  background: rgba(255, 255, 255, .55) !important;
+}
+
+/* The web page floats in a rounded card with margin + shadow (Dia signature). */
+#webview-container {
+  padding: 6px 10px 10px 4px !important;
+  background: transparent !important;
+}
+#webpage-stack,
+#webview-container .webpageview,
+.webpageview .webpage {
+  border-radius: 14px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 18px rgba(80, 50, 30, .13),
+              0 0 0 1px rgba(120, 90, 70, .06) !important;
+}
+
+/* Pill-shaped address + search fields. */
+.UrlBar-AddressField,
+.UrlBar-SearchField,
+.SearchField {
+  border-radius: 999px !important;
+}
+
+/* Rounder toolbar buttons on hover for a softer feel. */
+.toolbar .button-toolbar > button:hover,
+.button-toolbar.browserAction-icon:hover {
+  border-radius: 10px !important;
 }
