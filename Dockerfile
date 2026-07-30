@@ -39,10 +39,18 @@ RUN css="/opt/noVNC/app/styles/base.css"; \
       echo "NOVNC_BAR_HIDDEN"; \
     else echo "WARN: base.css not found at $css"; ls -la /opt/noVNC/app/styles/ 2>/dev/null || true; fi
 
-# Dia-like UI CSS mods (VivalArc Arc layout + FoundReach warm palette). startapp
-# copies these into the profile's mods folder on boot; Vivaldi loads them once
-# "Allow CSS modifications" is on and the folder is set to /config/mods.
+# Dia-like UI CSS mods (VivalArc Arc layout + FoundReach warm/pink palette + font).
 COPY mods/ /opt/mods/
+
+# ROBUST skin load: inject the Dia CSS straight into Vivaldi's UI (browser.html)
+# so it applies on EVERY boot — no fragile css_ui_mods pref/picker (which kept
+# resetting across deploys). This is the classic file-level Vivaldi UI mod.
+RUN UIHTML="$(find /opt/vivaldi -name browser.html 2>/dev/null | head -1)"; \
+    if [ -n "$UIHTML" ]; then \
+      UIDIR="$(dirname "$UIHTML")"; mkdir -p "$UIDIR/fr-mods" && cp /opt/mods/*.css "$UIDIR/fr-mods/"; \
+      sed -i 's#</head>#<link rel="stylesheet" href="fr-mods/0-gtwalsheim.css"/><link rel="stylesheet" href="fr-mods/vivalarc.css"/><link rel="stylesheet" href="fr-mods/zz-dia.css"/></head>#I' "$UIHTML"; \
+      echo "FR_UI_INJECTED into $UIHTML (refs=$(grep -c fr-mods "$UIHTML"))"; \
+    else echo "FR_UI: browser.html NOT FOUND"; find /opt/vivaldi -name '*.html' 2>/dev/null | head; fi
 
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
