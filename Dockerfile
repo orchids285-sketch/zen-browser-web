@@ -15,7 +15,7 @@ RUN { [ -d /var/log ] || { rm -f /var/log; mkdir -p /var/log; }; }; \
     grep -q '^staff:' /etc/group  || echo 'staff:x:50:' >> /etc/group; \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-      ca-certificates curl gnupg \
+      ca-certificates curl gnupg jq \
       fonts-liberation fonts-noto-color-emoji \
       systemd- udev- && \
     dpkg --configure -a && \
