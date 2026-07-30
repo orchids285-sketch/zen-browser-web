@@ -29,19 +29,26 @@ footer,
   background-color: #f1d9de !important;
 }
 
-/* Dia / cowork pill tabs. Inactive = translucent rose pill; active = solid white. */
-.tab { margin: 5px 3px 0 3px !important; }
+/* Tabs = black Cowork NOTCH-SHELL languettes, one per open tab: flush to the top
+   edge, rounded bottom, white label, faint white hairline — exact Cowork colors
+   (#0c0c0e fill, rgba(255,255,255,0.09) stroke, #f2f2f7 text, radius 12). */
+.tab { margin: 0 3px !important; }
 .tab .tab-header {
-  border-radius: 12px !important;
-  background: rgba(255, 255, 255, .34) !important;
-  min-height: 32px !important;
+  background: #0c0c0e !important;
+  color: #f2f2f7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-top: none !important;
+  border-radius: 0 0 13px 13px !important;
+  min-height: 30px !important;
+  box-shadow: none !important;
 }
-.tab .tab-header:hover { background: rgba(255, 255, 255, .6) !important; }
+.tab .tab-header .title,
+.tab .tab-header span,
+.tab .tab-header div,
+.tab .tab-header a { color: #f2f2f7 !important; fill: #f2f2f7 !important; }
+.tab .tab-header:hover { background: #17171a !important; }
 .tab.active .tab-header,
-.tab .tab-header.active {
-  background: #ffffff !important;
-  box-shadow: 0 2px 9px rgba(150, 90, 110, .18) !important;
-}
+.tab .tab-header.active { background: #1b1b1f !important; }
 
 /* White page floating in a rounded card (the active tab points down into it). */
 #webview-container {
