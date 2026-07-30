@@ -30,6 +30,11 @@ RUN curl -fSL https://repo.vivaldi.com/archive/linux_signing_key.pub | gpg --dea
     rm -rf /var/lib/apt/lists/* && \
     test -x /opt/vivaldi/vivaldi
 
+# Dia-like UI CSS mods (VivalArc Arc layout + FoundReach warm palette). startapp
+# copies these into the profile's mods folder on boot; Vivaldi loads them once
+# "Allow CSS modifications" is on and the folder is set to /config/mods.
+COPY mods/ /opt/mods/
+
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
 
