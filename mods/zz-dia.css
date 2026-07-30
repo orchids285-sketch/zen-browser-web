@@ -84,3 +84,20 @@ footer,
 #browser .toolbar-statusbar {
   display: none !important;
 }
+
+/* Whole window = a rounded floating card on a soft rose backdrop (the Dia frame).
+   #browser is inset by 10px so the rose desktop shows around its rounded edges. */
+html, body, #app {
+  background: #e6c6cd !important;
+}
+#browser {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  box-shadow: 0 14px 48px rgba(120, 70, 90, .30) !important;
+  top: 10px !important;
+  left: 10px !important;
+  right: 10px !important;
+  bottom: 10px !important;
+  width: auto !important;
+  height: auto !important;
+}
