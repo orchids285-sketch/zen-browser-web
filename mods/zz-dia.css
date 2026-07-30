@@ -69,3 +69,27 @@ footer,
 .button-toolbar.browserAction-icon:hover {
   border-radius: 10px !important;
 }
+
+/* ---- SaaS font: GT Walsheim across the Vivaldi UI (icons are SVG, unaffected). ---- */
+#browser,
+#browser div,
+#browser span,
+#browser button,
+#browser input,
+#browser .title,
+#browser .tab,
+#browser .tab-header,
+#browser .UrlBar,
+#browser .UrlBar-AddressField,
+#browser .SearchField,
+#browser .panel,
+#browser .label {
+  font-family: 'GT Walsheim', 'Inter', system-ui, sans-serif !important;
+}
+
+/* ---- Remove the bottom status bar (the "languette") for a cleaner Dia look. ---- */
+#browser #footer,
+#browser > footer,
+#browser .toolbar-statusbar {
+  display: none !important;
+}
