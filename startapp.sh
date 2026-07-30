@@ -1,9 +1,6 @@
 #!/bin/sh
 # Launch Vivaldi (Chromium engine) inside the noVNC session.
 export HOME=/config
-# DIAG TEST: force a FRESH profile each boot to check if Chromium's tracked-pref
-# MAC on a mature profile was rejecting our externally-set css dir.
-rm -rf /config/profile
 mkdir -p /config/profile
 # Clear stale Chromium singleton locks from an unclean shutdown. Without this,
 # on a persistent volume Vivaldi aborts with "profile appears to be in use by
@@ -30,18 +27,10 @@ else
   printf '%s' '{"browser":{"enabled_labs_experiments":["vivaldi-css-mods@1"]}}' >"$LS"
 fi
 if [ -f "$PREF" ]; then
-  t=$(mktemp); jq '.vivaldi.appearance.css_ui_mods_directory = "/config/mods"' "$PREF" >"$t" && mv "$t" "$PREF" || echo "FR-DIAG jq-pref-FAILED"
+  t=$(mktemp); jq '.vivaldi.appearance.css_ui_mods_directory = "/config/mods"' "$PREF" >"$t" 2>/dev/null && mv "$t" "$PREF" || rm -f "$t"
 else
   printf '%s' '{"vivaldi":{"appearance":{"css_ui_mods_directory":"/config/mods"}}}' >"$PREF"
 fi
-
-# --- diagnostics (visible in Railway logs) ---
-echo "FR-DIAG jq=$(command -v jq || echo MISSING)"
-echo "FR-DIAG mods=[$(ls -1 /config/mods 2>/dev/null | tr '\n' ' ')]"
-echo "FR-DIAG pref-exists=$([ -f "$PREF" ] && echo yes || echo no) LS-exists=$([ -f "$LS" ] && echo yes || echo no)"
-echo "FR-DIAG css-dir=$(jq -r '.vivaldi.appearance.css_ui_mods_directory // "UNSET"' "$PREF" 2>&1)"
-echo "FR-DIAG labs=$(jq -c '.browser.enabled_labs_experiments // "UNSET"' "$LS" 2>&1)"
-echo "FR-DIAG version=$(/opt/vivaldi/vivaldi --version 2>&1 | head -1)"
 
 exec /opt/vivaldi/vivaldi \
   --no-sandbox \

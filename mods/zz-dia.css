@@ -1,6 +1,3 @@
-/* NUCLEAR LOAD TEST — if this magenta ring shows, CSS mods load (remove after). */
-#browser { outline: 12px solid #ff00ff !important; outline-offset: -12px !important; }
-
 /* FoundReach — Dia-like WARM palette, layered on top of VivalArc (Arc layout).
    VivalArc gives the shape (rounded pills, floating white content card, clean
    sidebar); this file only warms the colors toward Dia's soft cream/pink and
