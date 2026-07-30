@@ -1,7 +1,7 @@
-# Opera One (Chromium/Blink) served in-browser via noVNC over one HTTP port (5800).
-# User asked for Opera (Arc/Dia are Mac-only + closed; Opera has a Linux .deb).
-# NB: Opera has NO custom-UI-CSS feature, and its UI is packed — so the Dia skin
-# injection below is BEST-EFFORT and will likely no-op (Opera stays default look).
+# Google Chrome (Chromium/Blink) served in-browser via noVNC over one HTTP port
+# (5800). User asked for Chrome: it's Chromium, has a Linux .deb, and is CLEAN
+# (no Opera-style ads). NB: like Opera, Chrome's UI is PACKED (resources.pak) →
+# NO custom-CSS skin possible; it stays the standard clean Chrome look.
 FROM jlesage/baseimage-gui:debian-12-v4
 
 # Base-image repairs so Debian browser packages install cleanly on this minimal image.
@@ -24,25 +24,13 @@ RUN css="/opt/noVNC/app/styles/base.css"; \
       echo "NOVNC_BAR_HIDDEN"; \
     fi
 
-# Install Opera One (stable) from Opera's official APT repo. apt resolves the
-# Chromium runtime deps. noninteractive so the postinst repo prompt doesn't hang.
-RUN curl -fsSL https://deb.opera.com/archive.key | gpg --dearmor -o /usr/share/keyrings/opera.gpg && \
-    echo "deb [signed-by=/usr/share/keyrings/opera.gpg arch=amd64] https://deb.opera.com/opera-stable/ stable non-free" > /etc/apt/sources.list.d/opera.list && \
+# Install Google Chrome stable from Google's official APT repo. apt resolves deps.
+RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/google-chrome.gpg arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
     apt-get update && \
-    echo "opera-stable opera-stable/add-deb-source boolean false" | debconf-set-selections && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y opera-stable && \
+    apt-get install -y google-chrome-stable && \
     rm -rf /var/lib/apt/lists/* && \
-    ( command -v opera && opera --version || ls -la /usr/lib/*/opera/ 2>/dev/null | head )
-
-# BEST-EFFORT Dia skin: if Opera exposes a loose UI html, inject the CSS like we
-# did on Vivaldi. Opera almost certainly packs its UI (resources.pak) → no-op.
-COPY mods/ /opt/mods/
-RUN UIHTML="$(find /usr/lib/*/opera /usr/share/opera* -name 'window.html' -o -name 'browser.html' 2>/dev/null | head -1)"; \
-    if [ -n "$UIHTML" ]; then \
-      UIDIR="$(dirname "$UIHTML")"; mkdir -p "$UIDIR/fr-mods" && cp /opt/mods/*.css "$UIDIR/fr-mods/"; \
-      sed -i 's#</head>#<link rel="stylesheet" href="fr-mods/0-gtwalsheim.css"/><link rel="stylesheet" href="fr-mods/zz-dia.css"/></head>#I' "$UIHTML"; \
-      echo "FR_OPERA_INJECTED into $UIHTML"; \
-    else echo "FR_OPERA: no loose UI html (Opera UI is packed) — skin NOT injectable"; find /usr/lib/*/opera -name '*.html' 2>/dev/null | head; fi
+    ( command -v google-chrome-stable && google-chrome-stable --version )
 
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
