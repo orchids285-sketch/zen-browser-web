@@ -38,6 +38,7 @@ echo "FR-DIAG mods=[$(ls -1 /config/mods 2>/dev/null | tr '\n' ' ')]"
 echo "FR-DIAG pref-exists=$([ -f "$PREF" ] && echo yes || echo no) LS-exists=$([ -f "$LS" ] && echo yes || echo no)"
 echo "FR-DIAG css-dir=$(jq -r '.vivaldi.appearance.css_ui_mods_directory // "UNSET"' "$PREF" 2>&1)"
 echo "FR-DIAG labs=$(jq -c '.browser.enabled_labs_experiments // "UNSET"' "$LS" 2>&1)"
+echo "FR-DIAG version=$(/opt/vivaldi/vivaldi --version 2>&1 | head -1)"
 
 exec /opt/vivaldi/vivaldi \
   --no-sandbox \
