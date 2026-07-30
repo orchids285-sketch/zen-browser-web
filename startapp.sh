@@ -1,7 +1,14 @@
 #!/bin/sh
-# Launch stock Zen inside the noVNC session. No Zen customization — the only
-# line here besides the launch is creating the profile DIRECTORY, without which
-# Zen aborts with "Profile Missing" on a fresh container. Zen itself is untouched.
+# Launch Vivaldi (Chromium engine) inside the noVNC session.
 export HOME=/config
 mkdir -p /config/profile
-exec /opt/zen/zen --no-remote --profile /config/profile
+exec /opt/vivaldi/vivaldi \
+  --no-sandbox \
+  --disable-dev-shm-usage \
+  --disable-gpu \
+  --no-first-run \
+  --no-default-browser-check \
+  --disable-features=Translate \
+  --password-store=basic \
+  --start-maximized \
+  --user-data-dir=/config/profile
