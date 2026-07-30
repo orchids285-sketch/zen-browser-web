@@ -33,17 +33,16 @@ RUN curl -fSL -o /tmp/zen.tar.xz \
     rm /tmp/zen.tar.xz && \
     test -x /opt/zen/zen
 
-# DIAGNOSTIC (temporary): dump Zen's real branding so we patch the right files.
-RUN apt-get update && apt-get install -y --no-install-recommends unzip && rm -rf /var/lib/apt/lists/*; \
-    echo "=====APPINI====="; cat /opt/zen/application.ini 2>/dev/null | head -40; \
-    echo "=====JA_FILES====="; ls -la /opt/zen/*.ja /opt/zen/browser/*.ja 2>/dev/null; \
-    mkdir -p /tmp/bo && cd /tmp/bo && unzip -q /opt/zen/browser/omni.ja 2>/dev/null; \
-    echo "=====BRANDFILES====="; find . -iname '*brand*' -type f 2>/dev/null; \
-    echo "=====BRANDFTL====="; find . -iname 'brand*.ftl' -exec sh -c 'echo "## {}"; cat "{}"' \; 2>/dev/null | head -40; \
-    echo "=====BRANDPROPS====="; find . -iname 'brand.properties' -exec sh -c 'echo "## {}"; cat "{}"' \; 2>/dev/null | head -30; \
-    echo "=====NEWTAB====="; find . -ipath '*newtab*' -type f 2>/dev/null | head -20; \
-    echo "=====ZENGREP====="; grep -rIl "Welcome to" . 2>/dev/null | head -10; \
-    echo "=====DONE====="
+# DEEP DE-BRAND: patch Zen's REAL files (NOT a CSS overlay) so "Zen" → "FoundReach"
+# in the app name, window title, menus and about: pages. Edits application.ini and
+# repacks the branding strings inside browser/omni.ja (Firefox's resource archive).
+RUN apt-get update && apt-get install -y --no-install-recommends unzip zip && rm -rf /var/lib/apt/lists/*; \
+    sed -i -E 's/^Name=Zen$/Name=FoundReach/' /opt/zen/application.ini; \
+    cd /tmp && rm -rf oj && mkdir oj && cd oj && unzip -oq /opt/zen/browser/omni.ja; \
+    find . -iname 'brand.ftl' -exec sed -i -E 's/^(-brand-shorter-name =).*/\1 FoundReach/; s/^(-brand-short-name =).*/\1 FoundReach/; s/^(-brand-full-name =).*/\1 FoundReach/; s/^(-brand-product-name =).*/\1 FoundReach/; s/^(-vendor-short-name =).*/\1 FoundReach/' {} + ; \
+    find . -iname 'brand.properties' -exec sed -i -E 's/^(brandShorterName=).*/\1FoundReach/; s/^(brandShortName=).*/\1FoundReach/; s/^(brandFullName=).*/\1FoundReach/; s/^(vendorShortName=).*/\1FoundReach/' {} + ; \
+    rm -f /opt/zen/browser/omni.ja && zip -qr9XD /opt/zen/browser/omni.ja * && cd / && rm -rf /tmp/oj; \
+    echo "DEBRAND_DONE omni_bytes=$(stat -c%s /opt/zen/browser/omni.ja)"
 
 # SaaS font (Inter) for the browser UI + our home page.
 RUN mkdir -p /usr/share/fonts/truetype/inter && \
