@@ -9,3 +9,8 @@ user_pref("browser.startup.homepage_override.mstone", "ignore");
 user_pref("startup.homepage_welcome_url", "");
 user_pref("startup.homepage_welcome_url.additional", "");
 user_pref("browser.messaging-system.whatsNewPanel.enabled", false);
+
+// Zen's signature FLOATING content look: the webpage floats in a rounded card
+// with a margin all around (native Zen prefs, not a CSS overlay).
+user_pref("zen.theme.content-element-separation", 10);
+user_pref("zen.theme.border-radius", 12);
