@@ -35,4 +35,7 @@ RUN chmod +x /startapp.sh
 
 # noVNC window / page title (neutral — not a rebrand of Vivaldi itself).
 ENV APP_NAME="Browser"
+# If Vivaldi ever exits/crashes, restart it instead of shutting the container
+# down (jlesage default kills the container when the app exits → crash-loop).
+ENV KEEP_APP_RUNNING=1
 EXPOSE 5800
