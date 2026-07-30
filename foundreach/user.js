@@ -11,6 +11,9 @@ user_pref("startup.homepage_welcome_url.additional", "");
 user_pref("browser.messaging-system.whatsNewPanel.enabled", false);
 
 // Zen's signature FLOATING content look: the webpage floats in a rounded card
-// with a margin all around (native Zen prefs, not a CSS overlay).
-user_pref("zen.theme.content-element-separation", 10);
-user_pref("zen.theme.border-radius", 12);
+// with a gap + shadow (native Zen prefs, not a CSS overlay). Separation maxed at
+// 12 (Zen's hard limit), rounded corners, and an accent color so the backdrop is
+// tinted → the white content card visibly pops (floats) against it.
+user_pref("zen.theme.content-element-separation", 12);
+user_pref("zen.theme.border-radius", 14);
+user_pref("zen.theme.accent-color", "#7b6ef6");
