@@ -27,10 +27,17 @@ else
   printf '%s' '{"browser":{"enabled_labs_experiments":["vivaldi-css-mods"]}}' >"$LS"
 fi
 if [ -f "$PREF" ]; then
-  t=$(mktemp); jq '.vivaldi.appearance.css_ui_mods_directory = "/config/mods"' "$PREF" >"$t" 2>/dev/null && mv "$t" "$PREF" || rm -f "$t"
+  t=$(mktemp); jq '.vivaldi.appearance.css_ui_mods_directory = "/config/mods"' "$PREF" >"$t" && mv "$t" "$PREF" || echo "FR-DIAG jq-pref-FAILED"
 else
   printf '%s' '{"vivaldi":{"appearance":{"css_ui_mods_directory":"/config/mods"}}}' >"$PREF"
 fi
+
+# --- diagnostics (visible in Railway logs) ---
+echo "FR-DIAG jq=$(command -v jq || echo MISSING)"
+echo "FR-DIAG mods=[$(ls -1 /config/mods 2>/dev/null | tr '\n' ' ')]"
+echo "FR-DIAG pref-exists=$([ -f "$PREF" ] && echo yes || echo no) LS-exists=$([ -f "$LS" ] && echo yes || echo no)"
+echo "FR-DIAG css-dir=$(jq -r '.vivaldi.appearance.css_ui_mods_directory // "UNSET"' "$PREF" 2>&1)"
+echo "FR-DIAG labs=$(jq -c '.browser.enabled_labs_experiments // "UNSET"' "$LS" 2>&1)"
 
 exec /opt/vivaldi/vivaldi \
   --no-sandbox \
