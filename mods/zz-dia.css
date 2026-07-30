@@ -43,18 +43,18 @@ footer,
   background: rgba(255, 255, 255, .55) !important;
 }
 
-/* The web page floats in a rounded card with margin + shadow (Dia signature). */
+/* The web page floats in a rounded card with clear margin + shadow (Dia signature). */
 #webview-container {
-  padding: 6px 10px 10px 4px !important;
+  padding: 10px 14px 14px 6px !important;
   background: transparent !important;
 }
 #webpage-stack,
 #webview-container .webpageview,
 .webpageview .webpage {
-  border-radius: 14px !important;
+  border-radius: 16px !important;
   overflow: hidden !important;
-  box-shadow: 0 2px 18px rgba(80, 50, 30, .13),
-              0 0 0 1px rgba(120, 90, 70, .06) !important;
+  box-shadow: 0 4px 22px rgba(70, 45, 25, .17),
+              0 0 0 1px rgba(120, 90, 70, .07) !important;
 }
 
 /* Pill-shaped address + search fields. */
