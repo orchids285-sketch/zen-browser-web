@@ -1,64 +1,66 @@
-/* FoundReach — Dia skin for Vivaldi. TOP tabs, soft rose, rounded pill tabs,
-   floating white content card. Injected into window.html so it always loads. */
+/* FoundReach — Dia skin for Vivaldi: pink top pill-tabs (cowork style) that
+   connect into a white rounded-top content panel. Injected into window.html. */
 
 :root {
-  --colorBg:          #f1d9de !important;  /* soft Dia rose chrome */
+  --colorBg:          #f1d9de !important;  /* soft Dia rose */
   --colorBgDark:      #eaccd3 !important;
   --colorBgLighter:   #fbeef1 !important;
-  --colorFg:          #4b3b40 !important;  /* warm mauve text */
+  --colorFg:          #4b3b40 !important;
   --colorAccentBg:    #eed3da !important;
   --colorAccentFg:    #4b3b40 !important;
-  --colorHighlightBg: #d98fa0 !important;  /* dusty-rose accent */
+  --colorHighlightBg: #d98fa0 !important;
   --colorHighlightFg: #ffffff !important;
 }
 
-/* Rose chrome across the whole top area + toolbar. */
+/* Rose: the top tab-bar zone. */
 #browser,
 #header,
+#tabs-tabbar-container,
+#tabs-container,
+.tabbar-wrapper,
+#panels-container {
+  background-color: #f1d9de !important;
+}
+
+/* Everything below the tabs = one WHITE rounded-top panel (toolbar + content),
+   so the active tab flows into it — the Dia "tab opens into the page" look. */
 .mainbar,
 .toolbar-mainbar,
 #main,
 #main > .inner,
-#tabs-tabbar-container,
-#tabs-container,
-.tabbar-wrapper,
-#panels-container,
-.toolbar,
-footer,
-.toolbar-statusbar {
-  background-color: #f1d9de !important;
+#webview-container,
+#webpage-stack,
+.webpageview,
+.webpageview .webpage {
+  background-color: #ffffff !important;
+}
+#main {
+  border-radius: 16px 16px 0 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 -1px 12px rgba(150, 90, 110, .07) !important;
 }
 
-/* Rounded pill tabs (Dia). Active = white pill; inactive = translucent. */
-.tab { border-radius: 12px !important; margin: 3px 3px !important; }
-.tab .tab-header { border-radius: 12px !important; }
+/* Dia / cowork tabs — rounded pills. Inactive = translucent rose pill;
+   active = solid white, rounded TOP only so it connects to the white panel. */
+.tab { margin: 5px 3px 0 3px !important; }
+.tab .tab-header {
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, .34) !important;
+  min-height: 32px !important;
+}
+.tab .tab-header:hover { background: rgba(255, 255, 255, .6) !important; }
 .tab.active .tab-header,
 .tab .tab-header.active {
   background: #ffffff !important;
-  box-shadow: 0 1px 6px rgba(150, 90, 110, .18) !important;
-}
-.tab .tab-header:hover { background: rgba(255, 255, 255, .5) !important; }
-
-/* White page floating in a rounded card with margin + shadow (Dia). */
-#webview-container {
-  padding: 8px 12px 12px 12px !important;
-  background: transparent !important;
-}
-#webpage-stack,
-#webview-container .webpageview,
-.webpageview .webpage {
-  border-radius: 16px !important;
-  overflow: hidden !important;
-  box-shadow: 0 4px 24px rgba(150, 90, 110, .16),
-              0 0 0 1px rgba(150, 90, 110, .05) !important;
+  border-radius: 12px 12px 0 0 !important;
 }
 
-/* Pill address + search fields. */
+/* Soft pill address field, sitting in the white toolbar. */
 .UrlBar-AddressField,
 .UrlBar-SearchField,
 .SearchField {
   border-radius: 999px !important;
-  background: rgba(255, 255, 255, .6) !important;
+  background: #f6eef0 !important;
 }
 
 /* SaaS font: GT Walsheim (icons are SVG, unaffected). */
@@ -78,26 +80,9 @@ footer,
   font-family: 'GT Walsheim', 'Inter', system-ui, sans-serif !important;
 }
 
-/* Remove the bottom status bar for a cleaner, Dia-like frame. */
+/* Remove the bottom status bar for a cleaner Dia frame. */
 #browser #footer,
 #browser > footer,
 #browser .toolbar-statusbar {
   display: none !important;
-}
-
-/* Whole window = a rounded floating card on a soft rose backdrop (the Dia frame).
-   #browser is inset by 10px so the rose desktop shows around its rounded edges. */
-html, body, #app {
-  background: #e6c6cd !important;
-}
-#browser {
-  border-radius: 20px !important;
-  overflow: hidden !important;
-  box-shadow: 0 14px 48px rgba(120, 70, 90, .30) !important;
-  top: 10px !important;
-  left: 10px !important;
-  right: 10px !important;
-  bottom: 10px !important;
-  width: auto !important;
-  height: auto !important;
 }
