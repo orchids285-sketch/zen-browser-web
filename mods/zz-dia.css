@@ -97,3 +97,27 @@ footer,
 #browser .toolbar-statusbar {
   display: none !important;
 }
+
+/* ── No account surfaces ───────────────────────────────────────────────
+   The tool is reached from a workspace where the user is already signed in
+   with Clerk, so Vivaldi's own identity affordances (the profile avatar and
+   the VPN upsell badge in the toolbar) are the only place an "account" would
+   appear. Matched several ways because Vivaldi renames these between builds:
+   by button name, by title, and by the wrapper class. */
+button[name="ProfileButton"],
+button[name="ProfileManagerButton"],
+button[name="VPNButton"],
+button[title*="Profile" i],
+button[title*="profil" i],
+button[title*="VPN" i],
+.ProfilePopup,
+.profile-popup,
+.ProfileButton,
+.VPNButton,
+.vpn-badge,
+#profile-button,
+.toolbar-mainbar .profile,
+.toolbar-mainbar [class*="Profile"],
+.toolbar-mainbar [class*="vpn" i] {
+    display: none !important;
+}
