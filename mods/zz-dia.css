@@ -99,25 +99,24 @@ footer,
 }
 
 /* ── No account surfaces ───────────────────────────────────────────────
-   The tool is reached from a workspace where the user is already signed in
-   with Clerk, so Vivaldi's own identity affordances (the profile avatar and
-   the VPN upsell badge in the toolbar) are the only place an "account" would
-   appear. Matched several ways because Vivaldi renames these between builds:
-   by button name, by title, and by the wrapper class. */
-button[name="ProfileButton"],
-button[name="ProfileManagerButton"],
-button[name="VPNButton"],
-button[title*="Profile" i],
-button[title*="profil" i],
-button[title*="VPN" i],
-.ProfilePopup,
-.profile-popup,
-.ProfileButton,
+   The tool is opened from a workspace where the user is already signed in with
+   Clerk, so Vivaldi's own identity affordances are the only place an "account"
+   would appear. These class names were read out of Vivaldi's own bundle.js
+   during the image build (FR_UI_PROBE) rather than guessed — the earlier
+   guessed selectors matched nothing. This CSS applies to the browser UI only,
+   never to page content. */
+.profile-picture-wrapper,
+.profile-picture,
+.profile-name,
+.profile-name-text,
+.profile-details,
+.profile-image,
+[class*="profile-picture"],
 .VPNButton,
-.vpn-badge,
-#profile-button,
-.toolbar-mainbar .profile,
-.toolbar-mainbar [class*="Profile"],
-.toolbar-mainbar [class*="vpn" i] {
+button.VPNButton,
+[class*="VPNButton"],
+.vpn-alert,
+.popup-vpn-intro,
+.proton-vpn-intro {
     display: none !important;
 }
