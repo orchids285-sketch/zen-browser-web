@@ -55,6 +55,22 @@ RUN UIHTML="$(find /opt/vivaldi/resources -name window.html -o -name browser.htm
       echo "FR_UI_INJECTED into $UIHTML (refs=$(grep -c fr-mods "$UIHTML"))"; \
     else echo "FR_UI: UI html NOT FOUND"; find /opt/vivaldi -name '*.html' 2>/dev/null | head; fi
 
+# FR_UI_PROBE — one-shot introspection: print the real class/name tokens Vivaldi uses
+# for its profile + VPN affordances, so the CSS mod can target them instead of guessing.
+# Cheap (a grep over the UI bundle) and the output lands in the Railway build log.
+RUN set +e; \
+    B="$(find /opt/vivaldi/resources -name 'bundle.js' 2>/dev/null | head -1)"; \
+    echo "FR_UI_PROBE bundle=$B"; \
+    if [ -n "$B" ]; then \
+      echo "FR_UI_PROBE --- profile tokens ---"; \
+      grep -oE '"[A-Za-z0-9_-]*[Pp]rofile[A-Za-z0-9_-]*"' "$B" | sort -u | head -40; \
+      echo "FR_UI_PROBE --- vpn tokens ---"; \
+      grep -oE '"[A-Za-z0-9_-]*[Vv][Pp][Nn][A-Za-z0-9_-]*"' "$B" | sort -u | head -25; \
+      echo "FR_UI_PROBE --- toolbar button names ---"; \
+      grep -oE 'name:"[A-Za-z0-9_-]+"' "$B" | sort -u | head -60; \
+    fi; \
+    echo "FR_UI_PROBE done"; true
+
 COPY startapp.sh /startapp.sh
 RUN chmod +x /startapp.sh
 
