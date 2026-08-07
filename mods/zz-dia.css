@@ -101,22 +101,20 @@ footer,
 /* ── No account surfaces ───────────────────────────────────────────────
    The tool is opened from a workspace where the user is already signed in with
    Clerk, so Vivaldi's own identity affordances are the only place an "account"
-   would appear. These class names were read out of Vivaldi's own bundle.js
-   during the image build (FR_UI_PROBE) rather than guessed — the earlier
-   guessed selectors matched nothing. This CSS applies to the browser UI only,
-   never to page content. */
+   would appear. These selectors were read out of Vivaldi's own bundle.js during
+   the image build, not guessed: the toolbar avatar is rendered as
+   "button-circularimage button-cropimage profile-popup sync-anchor". Applies to
+   the browser UI only, never to page content. */
+.profile-popup,
+button.profile-popup,
+.sync-anchor,
 .profile-picture-wrapper,
 .profile-picture,
-.profile-name,
-.profile-name-text,
-.profile-details,
-.profile-image,
-[class*="profile-picture"],
+[class*="profile-popup"],
 .VPNButton,
 button.VPNButton,
 [class*="VPNButton"],
-.vpn-alert,
-.popup-vpn-intro,
-.proton-vpn-intro {
+.toolbar-mainbar [class*="vpn" i],
+.vpn-alert {
     display: none !important;
 }
